@@ -240,6 +240,19 @@
           }
         });
       }
+
+      // Check in User is logged in or not
+      $.ajax({
+        url: 'assets/php/action.php',
+        method: 'post',
+        data: { action: 'checkUser' },
+        success:function(response){
+          if (response == 'bye') {
+            window.location = 'index.php';
+          }
+        }
+      });
+
   	});
   </script>
 </body>

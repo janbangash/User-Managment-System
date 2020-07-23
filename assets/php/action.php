@@ -133,6 +133,14 @@
 	 	}
 	 }
 
+	 // Checking User is logged in or not
+	 if (isset($_POST['action']) && $_POST['action'] == 'checkUser') {
+	 	if (!$user->currentUser($_SESSION['user'])) {
+	 		echo 'bye';
+	 		unset($_SESSION['user']);
+	 	}
+	 }
+
 
 
  ?>

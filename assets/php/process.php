@@ -148,84 +148,84 @@
 
 	if (isset($_POST['action']) && $_POST['action'] == 'verify_email') {
 		try {
-	 				//Server Setting
-	 				
-	 		  		$mail->isSMTP();
-	 		  		$mail->Host ='smtp.gmail.com';
-	 		  		$mail->SMTPAuth = true;
-	 		  		$mail->Username = Database::USERNAME;
-	 		  		$mail->Password = Database::PASSWORD;
-	 		  		$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-	 		  		$mail->Port = 587;
+			//Server Setting
+			
+	  		$mail->isSMTP();
+	  		$mail->Host ='smtp.gmail.com';
+	  		$mail->SMTPAuth = true;
+	  		$mail->Username = Database::USERNAME;
+	  		$mail->Password = Database::PASSWORD;
+	  		$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+	  		$mail->Port = 587;
 
-	 		  		//Reciptent
-	 		  		$mail->setFrom(Database::USERNAME,'Bangash Managment System');
-	 		  		$mail->addAddress($cemail);
+	  		//Reciptent
+	  		$mail->setFrom(Database::USERNAME,'Bangash Managment System');
+	  		$mail->addAddress($cemail);
 
-	 		  		//Content
-	 		  		$mail->isHTML(true);
-	 		  		$mail->Subject = 'E-Mail Verification';
-	 		  		$mail->Body = '<h3>Click the below link to verify your E-Mail.<br><a href="http://localhost/user_systemproject/verify-email.php?email='.$cemail.'">http://localhost/user_systemproject/verify-email.php?email='.$cemail.'</a><br>Regards<br>Bangash Managment System!</h3>';
+	  		//Content
+	  		$mail->isHTML(true);
+	  		$mail->Subject = 'E-Mail Verification';
+	  		$mail->Body = '<h3>Click the below link to verify your E-Mail.<br><a href="http://localhost/user_systemproject/verify-email.php?email='.$cemail.'">http://localhost/user_systemproject/verify-email.php?email='.$cemail.'</a><br>Regards<br>Bangash Managment System!</h3>';
 
-	 		  		$mail->send();
-	 		  		echo $cuser->showMesssage('success','Verification link sent to your E-Mail. Please check your mail!');
+	  		$mail->send();
+	  		echo $cuser->showMesssage('success','Verification link sent to your E-Mail. Please check your mail!');
 
-	 		  	} 
-	 		  	catch (Exception $e) {
-	 		  		echo $cuser->showMesssage('danger','Something went wrong please try again later!');
-	 		  	}  	
+	  		} 
+	  	catch (Exception $e) {
+	  		echo $cuser->showMesssage('danger','Something went wrong please try again later!');
+	  	}  	
 	}
 
-							// Handel Send Feedback Admin Ajax Request
-							if (isset($_POST['action']) && $_POST['action'] == 'feedback') {
-								$subject = $cuser->test_input($_POST['subject']);
-								$feedback = $cuser->test_input($_POST['feedback']);
+		// Handel Send Feedback Admin Ajax Request
+		if (isset($_POST['action']) && $_POST['action'] == 'feedback') {
+			$subject = $cuser->test_input($_POST['subject']);
+			$feedback = $cuser->test_input($_POST['feedback']);
 
-								$cuser->send_feedback($subject,$feedback,$cid);
-								$cuser->notification($cid, 'admin', 'Feedback written');
-							}
+			$cuser->send_feedback($subject,$feedback,$cid);
+			$cuser->notification($cid, 'admin', 'Feedback written');
+		}
 
-							// Handel Fetch Notification Ajax Request
-							if (isset($_POST['action']) && $_POST['action'] == 'fetchNotification') {
-								$notification = $cuser->fetchNotification($cid);
-								$output = '';
+		// Handel Fetch Notification Ajax Request
+		if (isset($_POST['action']) && $_POST['action'] == 'fetchNotification') {
+			$notification = $cuser->fetchNotification($cid);
+			$output = '';
 
-								if ($notification) {
-									foreach ($notification as $row) {
-										$output .= '<div class="alert alert-danger" role= "alert">
-																		  				<button type="button" id="'.$row['id'].'" class="close" data-dismiss="alert" aria-label="Close">
-																		  					<span aria-hidden="true">&times;</span>
-																		  				</button>
-																		  				<h4 class="alert-heading">New Notification</h4>
-																		  				<p class="mb-0 lead">'.$row['message'].'</p>
-																		  				<hr class="my-2">
-																		  				<p class="mb-0 float-left">Reply of feedback from Admin!</p>
-																		  				<p class="mb-0 float-right">'.$cuser->timeInAgo($row['created_at']).'</p>
-																		  				<div class="clearfix"></div>
-																		  			</div>';
-									}
-									echo $output;
-								}
-								else{
-									echo '<h3 class="text-center text-secondary mt-5">No Any New Notification!</h3>';
-								}
-								
-							}
+			if ($notification) {
+				foreach ($notification as $row) {
+					$output .= '<div class="alert alert-danger" role= "alert">
+			  				<button type="button" id="'.$row['id'].'" class="close" data-dismiss="alert" aria-label="Close">
+			  					<span aria-hidden="true">&times;</span>
+			  				</button>
+			  				<h4 class="alert-heading">New Notification</h4>
+			  				<p class="mb-0 lead">'.$row['message'].'</p>
+			  				<hr class="my-2">
+			  				<p class="mb-0 float-left">Reply of feedback from Admin!</p>
+			  				<p class="mb-0 float-right">'.$cuser->timeInAgo($row['created_at']).'</p>
+			  				<div class="clearfix"></div>
+			  			</div>';
+				}
+				echo $output;
+			}
+			else{
+				echo '<h3 class="text-center text-secondary mt-5">No Any New Notification!</h3>';
+			}
+			
+		}
 
-							// Check Notification on menu bar
-							if (isset($_POST['action']) && $_POST['action'] == 'checkNotification') {
-								if ($cuser->fetchNotification($cid)) {
-									echo '<i class="fas fa-circle fa-sm text-danger"></i>';
-								}
-								else{
-									echo '';
-								}
-							}
+		// Check Notification on menu bar
+		if (isset($_POST['action']) && $_POST['action'] == 'checkNotification') {
+			if ($cuser->fetchNotification($cid)) {
+				echo '<i class="fas fa-circle fa-sm text-danger"></i>';
+			}
+			else{
+				echo '';
+			}
+		}
 
-							// Remove Notification 
-							if (isset($_POST['notification_id'])) {
-								$id = $_POST['notification_id'];
-								$cuser->removeNotification($id);
-							}
+		// Remove Notification 
+		if (isset($_POST['notification_id'])) {
+			$id = $_POST['notification_id'];
+			$cuser->removeNotification($id);
+		}
 
 ?>

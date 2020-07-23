@@ -30,6 +30,19 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 
+			// Check Notification on Admin Panel side bar
+			checkNotification();
+
+			function checkNotification(){
+				$.ajax({
+					url: 'assets/php/admin-action.php',
+					method: 'post',
+					data: { action: 'checkNotification' },
+					success:function(response){
+						$("#checkNotification").html(response);
+					}
+				});
+			}
 			// Fetch All Deleted Users Ajax Request
 			fetchAllDeletedUsers();
 			
